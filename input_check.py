@@ -23,11 +23,12 @@ def is_iso_date_like(n: str) -> bool:
     except:
         return False
 
-def is_question_ok(typ, question, answer, prec):
+def is_question_ok(typ, question, answer, prec, pts):
     typ_ok = isinstance(typ, QuestionType)
-    prec_ok = True if not prec or isinstance(prec[0], Precision) else False
+    prec_ok = True if not prec or isinstance(prec, Precision) else False
+    pts_ok = True if not pts or is_int_like(pts) else False
     question_ok = isinstance(question, str)
-    if typ_ok and prec_ok and question_ok:
+    if typ_ok and prec_ok and question_ok and pts_ok:
         return is_answer_ok(typ, answer)
     return False
 
@@ -37,6 +38,6 @@ def is_answer_ok(typ, answer):
         case QuestionType.FLOAT: return is_float_like(answer)
         case QuestionType.INT: return is_int_like(answer)
         case QuestionType.SET: return isinstance(answer, set)
-        case _: return True
+        case _: raise NotImplementedError(f"Unknown question type: {typ}")
 
 
