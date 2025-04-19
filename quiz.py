@@ -1,27 +1,32 @@
-from questions_db import Questions
 from question import Question
 from question_type import QuestionType
 import input_check
 from random import random, randint
+import file_handler
+from typing import List
 
 
 class Quizz:
 
     def __init__(self, number_of_questions=0):
-        self._questions = Questions(number_of_questions)
+        self._db: List[Question] = file_handler.load_questions()
+        self._number_of_questions = number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)
+        self._db = self._db[:self._number_of_questions]
         self._answer = None
         self._user_exit = False
-        self._actual_question: Question = True   #don't change it! at first run, if its None, run() would return False
+        self._actual_question: Question
+        self._index = 0
 
 
     @property
     def run(self):
-        return False if self._user_exit else self._actual_question
+        return False if self._user_exit else self._index < len(self._db)
 
     def ask_question(self):
-        self._actual_question = self._questions.next()
         if self.run:
+            self._actual_question = self._db[self._index]
             print(f"\n{self._actual_question}")
+
 
     def get_answer(self):
         input_ok = False
@@ -46,22 +51,19 @@ class Quizz:
     def evaluate_answer(self):
         if self.run:
             self._actual_question.evaluate(self._answer)
-
+            self._index += 1        #important to change the index at the last step, and not before
 
     @property
     def max_points(self):
-        return self._questions.max_points
+        return sum([x.max_point for x in self._db])
 
     @property
     def points(self):
-        return self._questions.points
-    @property
-    def number_of_questions(self):
-        return self._questions._number_of_questions
+        return sum([x.point for x in self._db])
 
     def show_statistics(self):
         print("Gratulálok!")
         print(f"Az elérhető {self.max_points} pontból {self.points} pontot kaptál. "
               f"\nEz egy {round((self.points / self.max_points) * 100, 2)}%-es eredmény.")
         print("Kérdések amikre rossz választ adtál:\n")
-        print(*[x for x in self._questions._db if x.answer_was_not_correct], sep="\n")
+        print(*[x for x in self._db if x.answer_was_not_correct], sep="\n")
