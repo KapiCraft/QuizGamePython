@@ -10,8 +10,8 @@ class Quizz:
 
     def __init__(self, number_of_questions=0):
         self._db: List[Question] = file_handler.load_questions()
-        self._number_of_questions = number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)
-        self._db = self._db[:self._number_of_questions]
+        #self._db length = 0 < number_of_questions <= len(self._db)
+        self._db = self._db[:number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)]
         self._answer = None
         self._user_exit = False
         self._actual_question: Question
@@ -26,6 +26,7 @@ class Quizz:
         if self.run:
             self._actual_question = self._db[self._index]
             print(f"\n{self._actual_question}")
+
 
 
     def get_answer(self):
@@ -51,7 +52,8 @@ class Quizz:
     def evaluate_answer(self):
         if self.run:
             self._actual_question.evaluate(self._answer)
-            self._index += 1        #important to change the index at the last step, and not before
+            self._index += 1  # important to change the index at the last step, and not before
+
 
     @property
     def max_points(self):

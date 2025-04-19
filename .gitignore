@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 teszt*.py
 .idea/
+xquestions_db.py
+
 
 # C extensions
 *.so
