@@ -1,16 +1,15 @@
 """
 Here you can list, create and delete questions.
 """
-from questions_db import Questions
+import file_handler
 from prettytable import PrettyTable
 
 
-
-my_questions = Questions(shuffle_db=False)
+my_questions = file_handler.load_questions(shuffle_db=False)
 
 def list_questions():
     t = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
-    for index, q in enumerate(my_questions._db, 10):
+    for index, q in enumerate(my_questions, 10):
         t.add_row([index, q.type.name, q.question, q.correct_answer, q.max_point, q.precision.name])
     t.align = "l"
     print(t)
