@@ -38,6 +38,7 @@ def is_answer_ok(typ, answer):
         case QuestionType.FLOAT: return is_float_like(answer)
         case QuestionType.INT: return is_int_like(answer)
         case QuestionType.SET: return isinstance(answer, set)
+        case QuestionType.STRING: return isinstance(answer, str)
         case _: raise NotImplementedError(f"Unknown question type: {typ}")
 
 
