@@ -18,7 +18,6 @@ def load_questions(shuffle_db: bool = True) -> List[Question]:
 
     return [x for x in list(map(_create_question, db)) if x]       #removes None-s from db, as a result of failed _create_question
 
-
 def _create_question(act) -> Question | None:
     if 3 <= len(act) <= 5:
         typ, quest, ans, *rest = act
@@ -31,5 +30,3 @@ def _create_question(act) -> Question | None:
         if input_check.is_question_ok(typ=typ, question=quest, answer=ans, prec=prec, pts=pts):
             return Question(question=quest, answer=ans, questiontype=typ, precision=prec, points=pts)
     return None
-
-

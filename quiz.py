@@ -7,7 +7,6 @@ from typing import List
 
 
 class Quizz:
-
     def __init__(self, number_of_questions=0):
         self._db: List[Question] = file_handler.load_questions()
         #self._db length = 0 < number_of_questions <= len(self._db)
@@ -17,7 +16,6 @@ class Quizz:
         self._actual_question: Question
         self._index = 0
 
-
     @property
     def run(self):
         return False if self._user_exit else self._index < len(self._db)
@@ -26,8 +24,6 @@ class Quizz:
         if self.run:
             self._actual_question = self._db[self._index]
             print(f"\n{self._actual_question}")
-
-
 
     def get_answer(self):
         input_ok = False
@@ -53,7 +49,6 @@ class Quizz:
         if self.run:
             self._actual_question.evaluate(self._answer)
             self._index += 1  # important to change the index at the last step, and not before
-
 
     @property
     def max_points(self):

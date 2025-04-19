@@ -5,7 +5,6 @@ from difflib import SequenceMatcher
 
 
 class Question:
-
     def __init__(self, questiontype: QuestionType, question: str, answer: str | int | float | set,
                  points: int = 10, precision: Precision = Precision.NORMAL):
         self.type = questiontype
@@ -66,4 +65,3 @@ class Question:
     @property
     def answer_was_not_correct(self):
         return self.point < self.max_point * 0.8
-

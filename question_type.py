@@ -7,4 +7,3 @@ class QuestionType(Enum):
     SET = 3
     DATE = 4
     FLOAT = 5
-

@@ -2,6 +2,7 @@ from datetime import date
 from question_type import QuestionType
 from question_precision import Precision
 
+
 def is_float_like(n: str) -> bool:
     try:
         float(n)
@@ -40,5 +41,3 @@ def is_answer_ok(typ, answer):
         case QuestionType.SET: return isinstance(answer, set)
         case QuestionType.STRING: return isinstance(answer, str)
         case _: raise NotImplementedError(f"Unknown question type: {typ}")
-
-
