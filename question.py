@@ -65,5 +65,5 @@ class Question:
 
     @property
     def answer_was_not_correct(self):
-        return self.point != self.max_point
+        return self.point < self.max_point * 0.8
 
