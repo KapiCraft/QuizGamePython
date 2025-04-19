@@ -1,6 +1,6 @@
 from quiz import Quizz
 
-number_of_questions = 20
+number_of_questions = 5
 quiz = Quizz(number_of_questions)
 
 while quiz.run:

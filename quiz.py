@@ -11,7 +11,8 @@ class Quizz:
         self._questions = Questions(number_of_questions)
         self._answer = None
         self._user_exit = False
-        self._actual_question: Question = True
+        self._actual_question: Question = True   #don't change it! at first run, if its None, run() would return False
+
 
     @property
     def run(self):
@@ -19,19 +20,19 @@ class Quizz:
 
     def ask_question(self):
         self._actual_question = self._questions.next()
-        if self._actual_question:
+        if self.run:
             print(f"\n{self._actual_question}")
 
     def get_answer(self):
-        if self.run:
-            input_ok = False
-            while not input_ok:
-                match self._actual_question.type:
-                    case QuestionType.DATE: self._answer = input("EEEE-HH-NN formátumban add, meg a választ!\n--> ")
-                    case QuestionType.FLOAT: self._answer = input(f"Ha a számot megadhatod tört alakban is. pl. {round(randint(1, 100) + random(), 2)}  \n--> ")
-                    case _: self._answer = input("--> ")
-                self._user_exit = self._answer == "exit"
-                input_ok = self._input_checker()
+        input_ok = False
+        while not input_ok and self.run:
+            match self._actual_question.type:
+                case QuestionType.DATE: self._answer = input("EEEE-HH-NN formátumban add, meg a választ!\n--> ")
+                case QuestionType.FLOAT: self._answer = input(f"Ha a számot megadhatod tört alakban is. pl. {round(randint(1, 100) + random(), 2)}  \n--> ")
+                case QuestionType.SET: self._answer = input(f"Ha válaszokat felsorolva, vesszővel elválasztva add meg! (legalább egy vessző kell a továbblépéshez)\n--> ")
+                case _: self._answer = input("--> ")
+            self._user_exit = self._answer == "exit"
+            input_ok = self._input_checker()
 
     def _input_checker(self) -> bool:
         match self._actual_question.type:
@@ -39,7 +40,8 @@ class Quizz:
             case QuestionType.FLOAT: return input_check.is_float_like(self._answer)
             case QuestionType.DATE: return input_check.is_iso_date_like(self._answer)
             case QuestionType.STRING: return len(self._answer) > 0
-            case _: return True
+            case QuestionType.SET: return "," in self._answer
+            case _: raise NotImplementedError(f"Unknown question type: {self._actual_question.type}")
 
     def evaluate_answer(self):
         if self.run:
@@ -61,5 +63,5 @@ class Quizz:
         print("Gratulálok!")
         print(f"Az elérhető {self.max_points} pontból {self.points} pontot kaptál. "
               f"\nEz egy {round((self.points / self.max_points) * 100, 2)}%-es eredmény.")
-        print("Kérdések amikre nem jó választ adtál:\n")
+        print("Kérdések amikre rossz választ adtál:\n")
         print(*[x for x in self._questions._db if x.answer_was_not_correct], sep="\n")
