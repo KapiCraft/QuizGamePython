@@ -1,5 +1,6 @@
 from random import shuffle
 from question import Question
+from question_precision import Precision
 import pickle
 from typing import List
 import input_check
@@ -28,14 +29,18 @@ class Questions:
         except FileNotFoundError:
             raise FileNotFoundError(f"Fájl nem található: {file_path.QUIZ_DB}")
 
-
     def _convert_to_question(self, act) -> Question | None:
-        if 3 <= len(act) <= 4:
-            typ, qes, ans, *prec = act  # precision is optional in the list, so sometimes it is missing
-            if input_check.is_question_ok(typ=typ, question=qes, answer=ans, prec=prec):
-                return Question(question=qes, answer=ans, questiontype=typ, precision=prec)
+        if 3 <= len(act) <= 5:
+            typ, quest, ans, *rest = act
+            prec, pts = None, None
+            for i in rest:
+                if isinstance(i, Precision):
+                    prec = i
+                elif input_check.is_int_like(i):
+                    pts = i
+            if input_check.is_question_ok(typ=typ, question=quest, answer=ans, prec=prec, pts=pts):
+                return Question(question=quest, answer=ans, questiontype=typ, precision=prec, points=pts)
         return None
-
 
     def _set_db_length(self, noq):
         self._number_of_questions = noq if 0 < noq < len(self._db) else len(self._db)
@@ -49,5 +54,5 @@ class Questions:
             return None
 
     @property
-    def points(self):
+    def points(self) -> int:
         return sum([x.point for x in self._db])
