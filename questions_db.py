@@ -9,16 +9,19 @@ import file_path
 
 class Questions:
 
-    def __init__(self, number_of_questions: int = 0):
+    def __init__(self, number_of_questions: int = 0, shuffle_db: bool = True):
+        self._shuffle = shuffle_db
         self._db: List[Question] = []
         self._create_database()
         self._set_db_length(number_of_questions)
         self.max_points = sum([x.max_point for x in self._db])
         self._index = 0
 
+
     def _create_database(self):
         self._load_db_from_file()
-        shuffle(self._db)
+        if self._shuffle:
+            shuffle(self._db)
         self._db = list(map(self._convert_to_question, self._db))
         self._db = [x for x in self._db if x]       #removes None-s from self._db, as a result of failed self._convert_to_question
 
