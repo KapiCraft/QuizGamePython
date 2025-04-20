@@ -39,11 +39,11 @@ def _save_questions():
     with open(file_handler.file_path.QUIZ_DB, "wb") as f:
         pickle.dump(output, f)
 
-
-while True:
+run = True
+while run:
     user_input = input("1. List questions\n2. Create question\n3. Delete question\n4. Exit\n-->")
     match user_input:
         case "1": list_questions()
         case "2": create_question()
         case "3": delete_question()
-        case "4": break
+        case "4": run = False
