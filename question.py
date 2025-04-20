@@ -15,7 +15,7 @@ class Precision(Enum):
     HIGH = 2
 
 class Question:
-    def __init__(self, questiontype: QuestionType, question: str, answer: str | int | float | set,
+    def __init__(self, questiontype: QuestionType, question: str, answer: any,
                  points: int = 10, precision: Precision = Precision.NORMAL):
         self.type = questiontype
         self.question = question
