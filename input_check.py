@@ -1,6 +1,7 @@
 from datetime import date
-from question_type import QuestionType
-from question_precision import Precision
+
+from question import QuestionType, Precision
+
 
 
 def is_float_like(n: str) -> bool:

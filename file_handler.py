@@ -1,20 +1,20 @@
-import file_path
-from question import Question
-from question_precision import Precision
-import input_check
 import pickle
 from random import shuffle
 from typing import List
 
+import config
+from question import Question, Precision
+import input_check
+
 
 def load_questions(shuffle_db: bool = True) -> List[Question]:
     try:
-        with open(file_path.QUIZ_DB, "rb") as f:
+        with open(config.QUIZ_DB, "rb") as f:
             db = pickle.load(f)
             if shuffle_db:
                 shuffle(db)
     except FileNotFoundError:
-        raise FileNotFoundError(f"Fájl nem található: {file_path.QUIZ_DB}")
+        raise FileNotFoundError(f"Fájl nem található: {config.QUIZ_DB}")
 
     return [x for x in list(map(_create_question, db)) if x]       #removes None-s from db, as a result of failed _create_question
 

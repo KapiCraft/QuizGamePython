@@ -2,9 +2,11 @@
 Here you can list, create and delete questions.
 """
 
-import file_handler
-from prettytable import PrettyTable
 import pickle
+
+from prettytable import PrettyTable
+
+import file_handler
 
 
 my_questions = file_handler.load_questions(shuffle_db=False)

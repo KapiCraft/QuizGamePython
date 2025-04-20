@@ -1,9 +1,9 @@
-from question import Question
-from question_type import QuestionType
-import input_check
 from random import random, randint
-import file_handler
 from typing import List
+
+from question import Question, QuestionType
+import input_check
+import file_handler
 
 
 class Quizz:
