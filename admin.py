@@ -38,9 +38,6 @@ def _save_questions():
         pickle.dump(output, f)
 
 
-
-
-
 while True:
     user_input = input("1. List questions\n2. Create question\n3. Delete question\n4. Exit\n-->")
     match user_input:

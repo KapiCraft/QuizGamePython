@@ -9,7 +9,7 @@ from typing import List
 class Quizz:
     def __init__(self, number_of_questions=0):
         self._db: List[Question] = file_handler.load_questions()
-        #self._db length = 0 < number_of_questions <= len(self._db)
+        #CODE BELOW: len(self._db) = number_of_questions if valid else all questions
         self._db = self._db[:number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)]
         self._answer = None
         self._user_exit = False
