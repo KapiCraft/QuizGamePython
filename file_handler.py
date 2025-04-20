@@ -20,13 +20,13 @@ def load_questions(shuffle_db: bool = True) -> List[Question]:
 
 def _create_question(act) -> Question | None:
     if 3 <= len(act) <= 5:
-        typ, quest, ans, *rest = act
-        prec, pts = None, None
+        typ, question, answer, *rest = act
+        precision, points = None, None
         for i in rest:
             if isinstance(i, Precision):
-                prec = i
+                precision = i
             elif input_check.is_int_like(i):
-                pts = i
-        if input_check.is_question_ok(typ=typ, question=quest, answer=ans, prec=prec, pts=pts):
-            return Question(question=quest, answer=ans, questiontype=typ, precision=prec, points=pts)
+                points = i
+        if input_check.is_question_ok(typ=typ, question=question, answer=answer, precision=precision, points=points):
+            return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
     return None

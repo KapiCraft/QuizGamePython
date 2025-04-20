@@ -25,12 +25,12 @@ def is_iso_date_like(n: str) -> bool:
     except:
         return False
 
-def is_question_ok(typ, question, answer, prec, pts):
+def is_question_ok(typ, question, answer, precision, points):
     typ_ok = isinstance(typ, QuestionType)
-    prec_ok = True if not prec or isinstance(prec, Precision) else False
-    pts_ok = True if not pts or is_int_like(pts) else False
+    precision_ok = not precision or isinstance(precision, Precision)
+    points_ok = not points or is_int_like(points)
     question_ok = isinstance(question, str)
-    if typ_ok and prec_ok and question_ok and pts_ok:
+    if typ_ok and precision_ok and question_ok and points_ok:
         return is_answer_ok(typ, answer)
     return False
 
