@@ -4,6 +4,7 @@ Here you can list, create and delete questions.
 
 import file_handler
 from prettytable import PrettyTable
+import pickle
 
 
 my_questions = file_handler.load_questions(shuffle_db=False)
@@ -19,7 +20,25 @@ def create_question():
     print("creating")
 
 def delete_question():
-    print("deleting")
+    global my_questions
+    list_questions()
+    try:
+        index = int(input("Melyik kérdést töröljem? (index számot add meg)\n--> ")) - 10  #10 is the first index
+        my_questions.pop(index if 0 <= index else len(my_questions))    #if index is negative, Python would accept it, so i set it to a not real index
+        _save_questions()
+        print("Sikeres törlés")
+    except IndexError:
+        print(f"Nem található ilyen index: {user_input}")
+    except ValueError:
+        print("Nem számot adott meg")
+
+def _save_questions():
+    output = [x._get_db_format() for x in my_questions]
+    with open(file_handler.file_path.QUIZ_DB, "wb") as f:
+        pickle.dump(output, f)
+
+
+
 
 
 while True:

@@ -65,3 +65,6 @@ class Question:
     @property
     def answer_was_not_correct(self):
         return self.point < self.max_point * 0.8
+
+    def _get_db_format(self):
+        return (self.type, self.question, self.correct_answer, self.max_point, self.precision)
