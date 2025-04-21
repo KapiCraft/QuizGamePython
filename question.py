@@ -103,7 +103,7 @@ def load_questions(shuffle_db: bool = True) -> List[Question]:
                                                                 # a result of failed _create_question()
 
 
-def _create_question(act) -> Question | None:
+def _create_question(act: tuple) -> Question | None:
     if 3 <= len(act) <= 5:
         typ, question, answer, *rest = act
         precision, points = None, None
