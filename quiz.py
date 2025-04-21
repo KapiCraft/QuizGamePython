@@ -2,7 +2,7 @@ from random import random, randint
 from typing import List
 
 from question import Question, QuestionType
-import input_check
+from input_check import looks_like_int, looks_like_float, looks_like_iso_date
 import file_handler
 
 
@@ -38,9 +38,9 @@ class Quizz:
 
     def _input_checker(self) -> bool:
         match self._actual_question.type:
-            case QuestionType.INT: return input_check.is_int_like(self._answer)
-            case QuestionType.FLOAT: return input_check.is_float_like(self._answer)
-            case QuestionType.DATE: return input_check.is_iso_date_like(self._answer)
+            case QuestionType.INT: return looks_like_int(self._answer)
+            case QuestionType.FLOAT: return looks_like_float(self._answer)
+            case QuestionType.DATE: return looks_like_iso_date(self._answer)
             case QuestionType.STRING: return len(self._answer) > 0
             case QuestionType.SET: return "," in self._answer
             case _: raise NotImplementedError(f"Unknown question type: {self._actual_question.type}")
