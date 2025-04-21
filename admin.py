@@ -6,10 +6,11 @@ import pickle
 
 from prettytable import PrettyTable
 
-import file_handler
+from config import QUIZ_DB
+from question import load_questions
 
 
-my_questions = file_handler.load_questions(shuffle_db=False)
+my_questions = load_questions(shuffle_db=False)
 
 def list_questions():
     t = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
@@ -36,7 +37,7 @@ def delete_question():
 
 def _save_questions():
     output = [x._get_db_format() for x in my_questions]
-    with open(file_handler.file_path.QUIZ_DB, "wb") as f:
+    with open(QUIZ_DB, "wb") as f:
         pickle.dump(output, f)
 
 run = True

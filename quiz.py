@@ -1,14 +1,14 @@
 from random import random, randint
 from typing import List
 
-from question import Question, QuestionType
+from question import Question, QuestionType, load_questions
 from input_check import looks_like_int, looks_like_float, looks_like_iso_date
 import file_handler
 
 
 class Quizz:
     def __init__(self, number_of_questions=0):
-        self._db: List[Question] = file_handler.load_questions()
+        self._db: List[Question] = load_questions()
         #CODE BELOW: len(self._db) = number_of_questions if valid else all questions
         self._db = self._db[:number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)]
         self._answer = None
