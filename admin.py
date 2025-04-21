@@ -10,9 +10,13 @@ from config import QUIZ_DB
 from question import load_questions
 
 
-my_questions = load_questions(shuffle_db=False)
+my_questions = None
 
 def list_questions():
+    global my_questions
+    if not my_questions:
+        load_questions(shuffle_db=False)
+
     table = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
     for index, q in enumerate(my_questions, 10): #q is a Question instance
         table.add_row([index, q.type.name, q.question, q.correct_answer, q.max_point, q.precision.name])
