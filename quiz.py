@@ -3,7 +3,7 @@ from typing import List
 
 from question import Question, QuestionType, load_questions
 from input_check import looks_like_int, looks_like_float, looks_like_iso_date
-import file_handler
+
 
 
 class Quizz:
