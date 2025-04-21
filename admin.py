@@ -13,11 +13,11 @@ from question import load_questions
 my_questions = load_questions(shuffle_db=False)
 
 def list_questions():
-    t = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
-    for index, q in enumerate(my_questions, 10):
-        t.add_row([index, q.type.name, q.question, q.correct_answer, q.max_point, q.precision.name])
-    t.align = "l"
-    print(t)
+    table = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
+    for index, q in enumerate(my_questions, 10): #q is a Question instance
+        table.add_row([index, q.type.name, q.question, q.correct_answer, q.max_point, q.precision.name])
+    table.align = "l"
+    print(table)
 
 def create_question():
     print("creating")
