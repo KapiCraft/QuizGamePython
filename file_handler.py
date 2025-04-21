@@ -25,8 +25,8 @@ def _create_question(act) -> Question | None:
         for i in rest:
             if isinstance(i, Precision):
                 precision = i
-            elif input_check.is_int_like(i):
+            elif input_check.looks_like_int(i):
                 points = i
-        if input_check.is_question_ok(typ=typ, question=question, answer=answer, precision=precision, points=points):
+        if input_check.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
             return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
     return None
