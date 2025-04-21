@@ -94,8 +94,8 @@ def load_questions(shuffle_db: bool = True) -> List[Question]:
     try:
         with open(QUIZ_DB, "rb") as f:
             db = pickle.load(f)
-            if shuffle_db:
-                shuffle(db)
+        if shuffle_db:
+            shuffle(db)
     except FileNotFoundError:
         raise FileNotFoundError(f"Fájl nem található: {QUIZ_DB}")
 
