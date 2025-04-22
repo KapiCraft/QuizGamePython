@@ -9,10 +9,6 @@ from input_check import looks_like_int, looks_like_question
 from question_enums import QuestionType, Precision
 
 
-
-
-
-
 class Question:
     def __init__(self, questiontype: QuestionType, question: str, answer: any,
                  points: int = 10, precision: Precision = Precision.NORMAL):
