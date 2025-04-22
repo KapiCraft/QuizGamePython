@@ -1,6 +1,6 @@
 from datetime import date
 
-from question import QuestionType, Precision
+from question_enums import QuestionType, Precision
 
 
 

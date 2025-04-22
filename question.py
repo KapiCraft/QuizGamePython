@@ -1,25 +1,15 @@
 from datetime import date
 from difflib import SequenceMatcher
-from enum import Enum
 import pickle
 from random import shuffle
 from typing import List
 
 from config import QUIZ_DB
 from input_check import looks_like_int, looks_like_question
+from question_enums import QuestionType, Precision
 
 
-class QuestionType(Enum):
-    INT = 1
-    STRING = 2
-    SET = 3
-    DATE = 4
-    FLOAT = 5
 
-class Precision(Enum):
-    LOW = 0
-    NORMAL = 1
-    HIGH = 2
 
 
 
@@ -64,12 +54,25 @@ class Question:
         self._calculate_points(accuracy)
 
     def _calculate_points(self, accuracy):
-        pts = [self.max_point, int(self.max_point * 0.8), 0]
-        match self.precision:
-            case Precision.LOW: pts_range = [0.2, 0.4]
-            case Precision.HIGH: pts_range = [0.05, 0.1]
-            case _: pts_range = [0.1, 0.2]
-        self.point = pts[0] if accuracy <= pts_range[0] else pts[1] if accuracy <= pts_range[1] else pts[2]
+        threshold = self._get_pointing_threshold()
+        self.point = 0
+        for i in threshold:
+            if accuracy <= i["error_limit"]:
+                self.point = self.max_point * i["pts_multiplier"]
+
+    def _get_pointing_threshold(self) -> List[dict[str, float | int]]:
+        thresholds = {
+            Precision.LOW: [{"error_limit": 0.2, "pts_multiplier": 1}, {"error_limit": 0.3, "pts_multiplier": 0.8}],
+            Precision.NORMAL: [{"error_limit": 0.1, "pts_multiplier": 1}, {"error_limit": 0.2, "pts_multiplier": 0.8}],
+            Precision.HIGH: [{"error_limit": 0.05, "pts_multiplier": 1}, {"error_limit": 0.1, "pts_multiplier": 0.8}],
+        }
+        threshold = thresholds.get(self.precision, None)
+        if not threshold:
+            raise NotImplementedError(f"Unknown precision: {self.precision}")
+        return threshold
+
+
+
 
     def _evaluate_set(self):
         self._answer = self._answer.strip().lower()
