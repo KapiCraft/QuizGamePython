@@ -50,9 +50,8 @@ class Question:
         self._calculate_points(accuracy)
 
     def _calculate_points(self, accuracy):
-        threshold = self._get_precision_threshold()
         pts = []
-        for i in threshold:
+        for i in self._get_precision_threshold():
             if accuracy <= i["error_limit"]:
                 pts.append(self.max_point * i["pts_multiplier"])
         self.point = round(max(pts)) if pts else 0
