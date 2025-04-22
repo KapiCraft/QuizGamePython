@@ -50,14 +50,14 @@ class Question:
         self._calculate_points(accuracy)
 
     def _calculate_points(self, accuracy):
-        threshold = self._get_pointing_threshold()
+        threshold = self._get_precision_threshold()
         pts = []
         for i in threshold:
             if accuracy <= i["error_limit"]:
                 pts.append(self.max_point * i["pts_multiplier"])
         self.points = max(pts) if pts else 0
 
-    def _get_pointing_threshold(self) -> List[dict[str, float | int]]:
+    def _get_precision_threshold(self) -> List[dict[str, float | int]]:
         thresholds = {
             Precision.LOW: [{"error_limit": 0.2, "pts_multiplier": 1}, {"error_limit": 0.3, "pts_multiplier": 0.8}],
             Precision.NORMAL: [{"error_limit": 0.1, "pts_multiplier": 1}, {"error_limit": 0.2, "pts_multiplier": 0.8}],
