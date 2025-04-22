@@ -54,7 +54,7 @@ class Question:
         pts = []
         for i in threshold:
             if accuracy <= i["error_limit"]:
-                pts.appened(self.max_point * i["pts_multiplier"])
+                pts.append(self.max_point * i["pts_multiplier"])
         self.points = max(pts) if pts else 0
 
     def _get_pointing_threshold(self) -> List[dict[str, float | int]]:
@@ -67,8 +67,6 @@ class Question:
         if not threshold:
             raise NotImplementedError(f"Unknown precision: {self.precision}")
         return threshold
-
-
 
 
     def _evaluate_set(self):
