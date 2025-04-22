@@ -20,8 +20,6 @@ def _lazy_load_questions():
 
 def list_questions():
     _lazy_load_questions()
-    global my_questions
-
     table = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
     for index, q in enumerate(my_questions, 10): #q is a Question instance
         table.add_row([index, q.type.name, q.question, q.correct_answer, q.max_point, q.precision.name])
