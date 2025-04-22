@@ -17,7 +17,7 @@ class Question:
         self._answer = None
         self.correct_answer = answer
         self.precision = precision if precision else Precision.NORMAL
-        self.max_point = int(points if points else 10)
+        self.max_point = int(points) if points else 10
         self.point = 0
 
     def __repr__(self):
