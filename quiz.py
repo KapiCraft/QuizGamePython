@@ -62,5 +62,6 @@ class Quizz:
         print("Gratulálok!")
         print(f"Az elérhető {self.max_points} pontból {self.points} pontot kaptál. "
               f"\nEz egy {round((self.points / self.max_points) * 100, 2)}%-es eredmény.")
-        print("Kérdések amikre rossz választ adtál:\n")
-        print(*[x for x in self._db if x.answer_was_not_correct], sep="\n")
+        if (bad_answers := [x for x in self._db if x.answer_was_not_correct]):
+            print("Kérdések amikre rossz választ adtál:\n")
+            print(*bad_answers, sep="\n")
