@@ -27,6 +27,9 @@ def list_questions():
     print(table)
 
 def create_question():
+    _lazy_load_questions()
+    global my_questions
+
     print("creating")
 
 def delete_question():
