@@ -51,10 +51,11 @@ class Question:
 
     def _calculate_points(self, accuracy):
         threshold = self._get_pointing_threshold()
-        self.point = 0
+        pts = []
         for i in threshold:
             if accuracy <= i["error_limit"]:
-                self.point = self.max_point * i["pts_multiplier"]
+                pts.appened(self.max_point * i["pts_multiplier"])
+        self.points = max(pts) if pts else 0
 
     def _get_pointing_threshold(self) -> List[dict[str, float | int]]:
         thresholds = {
