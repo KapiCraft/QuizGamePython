@@ -16,7 +16,7 @@ my_questions = None
 def _lazy_load_questions():
     global my_questions
     if not my_questions:
-        load_questions(shuffle_db=False)
+        my_questions = load_questions(shuffle_db=False)
 
 def list_questions():
     _lazy_load_questions()
