@@ -55,7 +55,7 @@ class Question:
         for i in threshold:
             if accuracy <= i["error_limit"]:
                 pts.append(self.max_point * i["pts_multiplier"])
-        self.points = max(pts) if pts else 0
+        self.points = round(max(pts)) if pts else 0
 
     def _get_precision_threshold(self) -> List[dict[str, float | int]]:
         thresholds = {
