@@ -27,14 +27,14 @@ def list_questions():
     print(table)
 
 def create_question():
-    _lazy_load_questions()
     global my_questions
-
+    _lazy_load_questions()
     print("creating")
 
 def delete_question():
-    list_questions()
     global my_questions
+    list_questions()
+    
     try:
         index = int(input("Melyik kérdést töröljem? (index számot add meg)\n--> ")) - 10  #10 is the first index
         my_questions.pop(index if 0 <= index else len(my_questions))    #if index is negative, Python would accept it, so i set it to a not real index
