@@ -2,8 +2,8 @@ from random import random, randint
 from typing import List
 
 from input_check import looks_like_int, looks_like_float, looks_like_iso_date
-from question import Question, load_questions
-from question_enums import QuestionType
+from question import Question, load_questions, QuestionType
+
 
 
 class Quizz:

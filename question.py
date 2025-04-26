@@ -1,13 +1,25 @@
 from datetime import date
 from difflib import SequenceMatcher
+from enum import Enum
 import pickle
 from random import shuffle
 from typing import List
 
 from config import QUIZ_DB
-from input_check import looks_like_int, looks_like_question
-from question_enums import QuestionType, Precision
+from input_check import looks_like_int, looks_like_iso_date, looks_like_float
 
+
+class QuestionType(Enum):
+    INT = 1
+    STRING = 2
+    SET = 3
+    DATE = 4
+    FLOAT = 5
+
+class Precision(Enum):
+    LOW = 0
+    NORMAL = 1
+    HIGH = 2
 
 class Question:
     def __init__(self, questiontype: QuestionType, question: str, answer: any,
@@ -85,6 +97,31 @@ class Question:
     def _get_db_format(self):
         return (self.type, self.question, self.correct_answer, self.max_point, self.precision)
 
+    @staticmethod
+    def looks_like_question(typ, question, answer, precision, points):
+        typ_ok = isinstance(typ, QuestionType)
+        precision_ok = not precision or isinstance(precision, Precision)
+        points_ok = not points or looks_like_int(points)
+        question_ok = isinstance(question, str)
+        if typ_ok and precision_ok and question_ok and points_ok:
+            return Question.looks_like_answer(typ, answer)
+        return False
+
+    @staticmethod
+    def looks_like_answer(typ, answer):
+        match typ:
+            case QuestionType.DATE:
+                return looks_like_iso_date(answer)
+            case QuestionType.FLOAT:
+                return looks_like_float(answer)
+            case QuestionType.INT:
+                return looks_like_int(answer)
+            case QuestionType.SET:
+                return isinstance(answer, set)
+            case QuestionType.STRING:
+                return isinstance(answer, str)
+            case _:
+                raise NotImplementedError(f"Unknown question type: {typ}")
 
 
 def load_questions(shuffle_db: bool = True) -> List[Question]:
@@ -109,6 +146,6 @@ def _create_question(act: tuple) -> Question | None:
                 precision = i
             elif looks_like_int(i):
                 points = i
-        if looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
+        if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
             return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
     return None
