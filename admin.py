@@ -7,18 +7,23 @@ import pickle
 from prettytable import PrettyTable
 
 from config import QUIZ_DB
-from question import load_questions
+from question import QuestionDB, Question
 
 
+QuestionDB.load(shuffle_db=False)
 my_questions = None
 
 
 def _lazy_load_questions():
     global my_questions
     if not my_questions:
-        my_questions = load_questions(shuffle_db=False)
+        my_questions = Question.questions
 
-def list_questions():
+def list_questions() -> None:
+    """
+    Lists the questions, starting index is 10, to avoid user accidentally deleting/creating a question
+    :return: None
+    """
     _lazy_load_questions()
     table = PrettyTable(['Index', 'Type', 'Question', 'Answer', 'Points', 'Precision'])
     for index, q in enumerate(my_questions, 10): #q is a Question instance
@@ -30,14 +35,23 @@ def create_question():
     pass
 
 def delete_question():
+    """
+    Lists the questions, then you can choose an index to delete, starting index is 10,
+    to avoid user accidentally deleting a question.
+    If the index provided is ok, the question will be deleted.
+    :return: None
+    """
     global my_questions
     list_questions()
-    
     try:
-        index = int(input("Melyik kérdést töröljem? (index számot add meg)\n--> ")) - 10  #10 is the first index
-        my_questions.pop(index if 0 <= index else len(my_questions))    #if index is negative, Python would accept it, so i set it to a not real index
-        _save_questions()
-        print("Sikeres törlés")
+        user_input = int(input("Melyik kérdést töröljem? (index számot add meg)\n--> "))
+        index = user_input - 10 #10 is the first index
+        if index >= 0:
+            my_questions.pop(index)
+            _save_questions()
+            print("Sikeres törlés")
+        else:
+            print(f"Nem található ilyen index: {user_input}")
     except IndexError:
         print(f"Nem található ilyen index: {user_input}")
     except ValueError:

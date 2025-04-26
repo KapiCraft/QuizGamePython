@@ -17,11 +17,21 @@ class QuestionType(Enum):
     FLOAT = 5
 
 class Precision(Enum):
+    """
+    You will get the points multiplier and error limit depending on the precision.
+    If the Precision is higher you need to be more accurate, with your answer
+    """
     LOW = 0
     NORMAL = 1
     HIGH = 2
 
 class Question:
+    """
+    A class representing a question.
+    Questions initialized, are stored in a list called: questions it's a class variable
+    """
+
+    questions = []
     def __init__(self, questiontype: QuestionType, question: str, answer: any,
                  points: int = 10, precision: Precision = Precision.NORMAL):
         self.type = questiontype
@@ -31,6 +41,7 @@ class Question:
         self.precision = precision if precision else Precision.NORMAL
         self.max_point = int(points) if points else 10
         self.point = 0
+        Question.questions.append(self)
 
     def __repr__(self):
         return f"{self.question}"
@@ -69,6 +80,12 @@ class Question:
         self.point = round(max(pts)) if pts else 0
 
     def _get_precision_threshold(self) -> List[dict[str, float | int]]:
+        """
+        You get the points multiplier and error limit depending on the precision
+        \n pts_multiplier = will be multiplied to the max_point if accuracy is above the error limit
+        \n error_limit = will be compared to the accuracy of the answer
+        :return: threshold, a list of dicts (error_limit, pts_multiplier)
+        """
         thresholds = {
             Precision.LOW: [{"error_limit": 0.2, "pts_multiplier": 1}, {"error_limit": 0.3, "pts_multiplier": 0.8}],
             Precision.NORMAL: [{"error_limit": 0.1, "pts_multiplier": 1}, {"error_limit": 0.2, "pts_multiplier": 0.8}],
@@ -126,17 +143,22 @@ class Question:
 
 
 class QuestionDB:
+
     @staticmethod
-    def load(shuffle_db: bool = True) -> List[Question]:
+    def load(shuffle_db: bool = True) -> None:
+        """
+        Upon loading questions, Question.questions will be populated
+        :param shuffle_db: bool
+        :return: None
+        """
         try:
             with open(QUIZ_DB, "rb") as f:
                 db = pickle.load(f)
         except FileNotFoundError:
             raise FileNotFoundError(f"Fájl nem található: {QUIZ_DB}")
-
         if shuffle_db:
             shuffle(db)
-        return [x for x in list(map(QuestionDB._create_question, db)) if x]    #removes None-s from db, as
+        [x for x in list(map(QuestionDB._create_question, db)) if x]    #removes None-s from db, as
                                                                 # a result of failed _create_question()
 
     @staticmethod
@@ -152,3 +174,5 @@ class QuestionDB:
             if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
                 return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
         return None
+
+
