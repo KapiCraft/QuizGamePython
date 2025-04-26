@@ -97,6 +97,7 @@ class Question:
     def _get_db_format(self):
         return (self.type, self.question, self.correct_answer, self.max_point, self.precision)
 
+
     @staticmethod
     def looks_like_question(typ, question, answer, precision, points):
         typ_ok = isinstance(typ, QuestionType)
@@ -124,28 +125,30 @@ class Question:
                 raise NotImplementedError(f"Unknown question type: {typ}")
 
 
-def load_questions(shuffle_db: bool = True) -> List[Question]:
-    try:
-        with open(QUIZ_DB, "rb") as f:
-            db = pickle.load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Fájl nem található: {QUIZ_DB}")
+class QuestionDB:
+    @staticmethod
+    def load(shuffle_db: bool = True) -> List[Question]:
+        try:
+            with open(QUIZ_DB, "rb") as f:
+                db = pickle.load(f)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Fájl nem található: {QUIZ_DB}")
 
-    if shuffle_db:
-        shuffle(db)
-    return [x for x in list(map(_create_question, db)) if x]    #removes None-s from db, as
+        if shuffle_db:
+            shuffle(db)
+        return [x for x in list(map(QuestionDB._create_question, db)) if x]    #removes None-s from db, as
                                                                 # a result of failed _create_question()
 
-
-def _create_question(act: tuple) -> Question | None:
-    if 3 <= len(act) <= 5:
-        typ, question, answer, *rest = act
-        precision, points = None, None
-        for i in rest:
-            if isinstance(i, Precision):
-                precision = i
-            elif looks_like_int(i):
-                points = i
-        if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
-            return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
-    return None
+    @staticmethod
+    def _create_question(act: tuple) -> Question | None:
+        if 3 <= len(act) <= 5:
+            typ, question, answer, *rest = act
+            precision, points = None, None
+            for i in rest:
+                if isinstance(i, Precision):
+                    precision = i
+                elif looks_like_int(i):
+                    points = i
+            if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
+                return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
+        return None

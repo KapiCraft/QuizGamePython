@@ -2,13 +2,13 @@ from random import random, randint
 from typing import List
 
 from input_check import looks_like_int, looks_like_float, looks_like_iso_date
-from question import Question, load_questions, QuestionType
+from question import Question, QuestionType, QuestionDB
 
 
 
 class Quizz:
     def __init__(self, number_of_questions=0):
-        self._db: List[Question] = load_questions()
+        self._db: List[Question] = QuestionDB.load()
         #CODE BELOW: len(self._db) = number_of_questions if valid else all questions
         self._db = self._db[:number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)]
         self._answer = None
