@@ -1,7 +1,7 @@
 from quiz import Quizz
 
 
-number_of_questions = 2
+number_of_questions = 10
 quiz = Quizz(number_of_questions)
 
 while quiz.run:
