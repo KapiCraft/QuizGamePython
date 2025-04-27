@@ -6,7 +6,7 @@ from question import Question, QuestionType, QuestionDB
 
 
 
-class Quizz:
+class Quiz:
     
     def __init__(self, number_of_questions=0):
         self._db: List[Question] = QuestionDB.get_questions(shuffle_db=True)

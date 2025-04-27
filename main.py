@@ -1,8 +1,8 @@
-from quiz import Quizz
+from quiz import Quiz
 
 
 number_of_questions = 10
-quiz = Quizz(number_of_questions)
+quiz = Quiz(number_of_questions)
 
 while quiz.run:
     quiz.ask_question()
