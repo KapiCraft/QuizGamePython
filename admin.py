@@ -2,11 +2,8 @@
 Here you can list, create and delete questions.
 """
 
-import pickle
-
 from prettytable import PrettyTable
 
-from config import QUIZ_DB
 from question import QuestionDB
 
 
@@ -61,8 +58,6 @@ def _is_question_index_valid(index: int) -> bool:
 def _save_questions():
     global my_questions
     QuestionDB.save_questions(my_questions)
-
-
 
 
 run = True
