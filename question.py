@@ -5,7 +5,8 @@ import pickle
 from random import shuffle
 from typing import List
 
-from config import QUIZ_DB
+import config
+from config import QUIZ_DB, QUESTION_NORMAL_POINTS
 from input_check import looks_like_int, looks_like_iso_date, looks_like_float
 
 
@@ -38,8 +39,8 @@ class Question:
         self.question = question
         self._answer = None
         self.correct_answer = answer
-        self.precision = precision if precision else Precision.NORMAL
-        self.max_point = int(points) if points else 10
+        self.precision = precision
+        self.max_point = int(points)
         self.point = 0
 
     def __repr__(self):
@@ -155,7 +156,7 @@ class QuestionDB:
     def _create_question(act: tuple) -> Question | None:
         if 3 <= len(act) <= 5:
             typ, question, answer, *rest = act
-            precision, points = None, None
+            precision, points = Precision.NORMAL, QUESTION_NORMAL_POINTS
             for i in rest:
                 if isinstance(i, Precision):
                     precision = i
