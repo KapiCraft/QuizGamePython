@@ -128,18 +128,12 @@ class Question:
     @staticmethod
     def looks_like_answer(typ, answer):
         match typ:
-            case QuestionType.DATE:
-                return looks_like_iso_date(answer)
-            case QuestionType.FLOAT:
-                return looks_like_float(answer)
-            case QuestionType.INT:
-                return looks_like_int(answer)
-            case QuestionType.SET:
-                return isinstance(answer, set)
-            case QuestionType.STRING:
-                return isinstance(answer, str)
-            case _:
-                raise NotImplementedError(f"Unknown question type: {typ}")
+            case QuestionType.DATE: return looks_like_iso_date(answer)
+            case QuestionType.FLOAT: return looks_like_float(answer)
+            case QuestionType.INT: return looks_like_int(answer)
+            case QuestionType.SET: return isinstance(answer, set)
+            case QuestionType.STRING: return isinstance(answer, str)
+            case _: raise NotImplementedError(f"Unknown question type: {typ}")
 
 
 class QuestionDB:
