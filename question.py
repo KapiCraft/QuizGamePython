@@ -154,16 +154,18 @@ class QuestionDB:
                                                                 # a result of failed _create_question()
     @staticmethod
     def _create_question(act: tuple) -> Question | None:
-        if 3 <= len(act) <= 5:
-            typ, question, answer, *rest = act
-            precision, points = Precision.NORMAL, QUESTION_NORMAL_POINTS
-            for i in rest:
-                if isinstance(i, Precision):
-                    precision = i
-                elif looks_like_int(i):
-                    points = i
-            if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
-                return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
+        if len(act) < 3 or len(act) > 6:
+            return None
+
+        typ, question, answer, *rest = act
+        precision, points = Precision.NORMAL, QUESTION_NORMAL_POINTS
+        for i in rest:
+            if isinstance(i, Precision):
+                precision = i
+            elif looks_like_int(i):
+                points = i
+        if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
+            return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
         return None
 
     @staticmethod
