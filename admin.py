@@ -7,17 +7,16 @@ import pickle
 from prettytable import PrettyTable
 
 from config import QUIZ_DB
-from question import QuestionDB, Question
+from question import QuestionDB
 
 
-QuestionDB.load(shuffle_db=False)
 my_questions = None
 
 
 def _lazy_load_questions():
     global my_questions
     if not my_questions:
-        my_questions = Question.questions
+        my_questions = QuestionDB.get_questions(shuffle_db=False)
 
 def list_questions() -> None:
     """
@@ -46,21 +45,24 @@ def delete_question():
     try:
         user_input = int(input("Melyik kérdést töröljem? (index számot add meg)\n--> "))
         index = user_input - 10 #10 is the first index
-        if index >= 0:
+        if _is_question_index_valid(index):
             my_questions.pop(index)
             _save_questions()
             print("Sikeres törlés")
         else:
             print(f"Nem található ilyen index: {user_input}")
-    except IndexError:
-        print(f"Nem található ilyen index: {user_input}")
     except ValueError:
         print("Nem számot adott meg")
 
+def _is_question_index_valid(index: int) -> bool:
+    global my_questions
+    return 0 <= index < len(my_questions)
+
 def _save_questions():
-    output = [x._get_db_format() for x in my_questions]
-    with open(QUIZ_DB, "wb") as f:
-        pickle.dump(output, f)
+    global my_questions
+    _lazy_load_questions()
+    QuestionDB.save_questions(my_questions)
+
 
 
 

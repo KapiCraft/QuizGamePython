@@ -8,8 +8,7 @@ from question import Question, QuestionType, QuestionDB
 
 class Quizz:
     def __init__(self, number_of_questions=0):
-        QuestionDB.load(shuffle_db=True)
-        self._db: List[Question] = Question.questions
+        self._db: List[Question] = QuestionDB.get_questions(shuffle_db=True)
         #CODE BELOW: len(self._db) = number_of_questions if valid else all questions
         self._db = self._db[:number_of_questions if 0 < number_of_questions < len(self._db) else len(self._db)]
         self._answer = None

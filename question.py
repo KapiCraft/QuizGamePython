@@ -28,10 +28,9 @@ class Precision(Enum):
 class Question:
     """
     A class representing a question.
-    Questions initialized, are stored in a list called: questions it's a class variable
     """
 
-    questions = []
+
     def __init__(self, questiontype: QuestionType, question: str, answer: any,
                  points: int = 10, precision: Precision = Precision.NORMAL):
         self.type = questiontype
@@ -41,7 +40,6 @@ class Question:
         self.precision = precision if precision else Precision.NORMAL
         self.max_point = int(points) if points else 10
         self.point = 0
-        Question.questions.append(self)
 
     def __repr__(self):
         return f"{self.question}"
@@ -139,11 +137,11 @@ class Question:
 class QuestionDB:
 
     @staticmethod
-    def load(shuffle_db: bool = True) -> None:
+    def get_questions(shuffle_db: bool = True) -> List[Question]:
         """
-        Upon loading questions, Question.questions will be populated
+        Return all questions from the pickle file
         :param shuffle_db: bool
-        :return: None
+        :return: List[Question]
         """
         try:
             with open(QUIZ_DB, "rb") as f:
@@ -152,7 +150,7 @@ class QuestionDB:
             raise FileNotFoundError(f"Fájl nem található: {QUIZ_DB}")
         if shuffle_db:
             shuffle(db)
-        [x for x in list(map(QuestionDB._create_question, db)) if x]    #removes None-s from db, as
+        return [x for x in list(map(QuestionDB._create_question, db)) if x]    #removes None-s from db, as
                                                                 # a result of failed _create_question()
 
     @staticmethod
@@ -168,5 +166,11 @@ class QuestionDB:
             if Question.looks_like_question(typ=typ, question=question, answer=answer, precision=precision, points=points):
                 return Question(question=question, answer=answer, questiontype=typ, precision=precision, points=points)
         return None
+
+    @staticmethod
+    def save_questions(questions: List[Question]):
+        output = [x._get_db_format() for x in questions]
+        with open(QUIZ_DB, "wb") as f:
+            pickle.dump(output, f)
 
 
