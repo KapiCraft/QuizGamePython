@@ -16,6 +16,7 @@ class QuestionType(Enum):
     DATE = 4
     FLOAT = 5
 
+
 class Precision(Enum):
     """
     You will get the points multiplier and error limit depending on the precision.
@@ -24,6 +25,7 @@ class Precision(Enum):
     LOW = 0
     NORMAL = 1
     HIGH = 2
+
 
 class Question:
     """
@@ -93,7 +95,6 @@ class Question:
             raise NotImplementedError(f"Unknown precision: {self.precision}")
         return threshold
 
-
     def _evaluate_set(self):
         self._answer = self._answer.strip().lower()
         self._answer = self._answer.split(",")
@@ -110,7 +111,6 @@ class Question:
 
     def _get_db_format(self):
         return (self.type, self.question, self.correct_answer, self.max_point, self.precision)
-
 
     @staticmethod
     def looks_like_question(typ, question, answer, precision, points):
@@ -151,7 +151,6 @@ class QuestionDB:
             shuffle(db)
         return [x for x in list(map(QuestionDB._create_question, db)) if x]    #removes None-s from db, as
                                                                 # a result of failed _create_question()
-
     @staticmethod
     def _create_question(act: tuple) -> Question | None:
         if 3 <= len(act) <= 5:
