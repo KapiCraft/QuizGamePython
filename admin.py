@@ -60,7 +60,6 @@ def _is_question_index_valid(index: int) -> bool:
 
 def _save_questions():
     global my_questions
-    _lazy_load_questions()
     QuestionDB.save_questions(my_questions)
 
 

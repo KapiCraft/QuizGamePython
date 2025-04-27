@@ -30,7 +30,6 @@ class Question:
     A class representing a question.
     """
 
-
     def __init__(self, questiontype: QuestionType, question: str, answer: any,
                  points: int = 10, precision: Precision = Precision.NORMAL):
         self.type = questiontype
