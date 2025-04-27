@@ -3,6 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 test_*.py
-
+.DS_St*
 .idea/
 
